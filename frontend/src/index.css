@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/*
+  Design tokens — paleta "Pizarra cálida"
+  Definidos como @theme para que Tailwind genere utilidades
+  como bg-bg, text-text, bg-accent, etc.
+*/
+@theme {
+  --color-bg: #FBF6EE;
+  --color-surface: #FFFFFF;
+  --color-text: #2B2420;
+  --color-text-muted: #6B6055;
+  --color-border: #EDE5D6;
+
+  --color-accent: #E8742C;
+  --color-accent-dark: #C85F1E;
+  --color-accent-light: #FFF3E8;
+
+  --color-success: #2F9E6E;
+  --color-success-bg: #E5F3EC;
+
+  --color-error: #D64550;
+  --color-error-bg: #FBEAEA;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Work Sans", sans-serif;
+
+  --radius-card: 14px;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
