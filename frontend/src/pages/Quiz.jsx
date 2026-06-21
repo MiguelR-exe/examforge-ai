@@ -1,102 +1,133 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PreguntaCard from '../components/PreguntaCard';
-import BarraProgreso from '../components/BarraProgreso';
-import Cronometro from '../components/Cronometro';
-import Boton from '../components/Boton';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-// Datos de prueba — esto se reemplazará por la respuesta real de la API (evento "QuizGenerado")
-const PREGUNTAS_MOCK = [
-  {
-    tema: 'Derivadas',
-    dificultad: 'Dificultad media',
-    texto: '¿Cuál es la derivada de f(x) = 3x² − 5x + 2?',
-    alternativas: ['f\'(x) = 6x − 5', 'f\'(x) = 3x − 5', 'f\'(x) = 6x + 2', 'f\'(x) = 3x² − 5'],
-    correcta: 0,
-  },
-  {
-    tema: 'Límites',
-    dificultad: 'Dificultad alta',
-    texto: '¿Cuál es el límite de (x² − 1)/(x − 1) cuando x tiende a 1?',
-    alternativas: ['El límite no existe', '2', '1', '0'],
-    correcta: 1,
-  },
-  {
-    tema: 'Integrales',
-    dificultad: 'Dificultad media',
-    texto: '¿Cuál es la integral de f(x) = 2x respecto a x?',
-    alternativas: ['x² + C', '2x² + C', 'x + C', 'x²/2 + C'],
-    correcta: 0,
-  },
-];
+import { useAuth } from "../hooks/useAuth";
+import { useQuiz } from "../hooks/useQuiz";
 
-const TIEMPO_INICIAL_SEGUNDOS = 300; // 5 minutos — vendrá de la config del usuario al generar el quiz
+import Loader from "../components/common/Loader";
+import ErrorMessage from "../components/common/ErrorMessage";
+
+import QuizProgress from "../components/quiz/QuizProgress";
+import QuestionCard from "../components/quiz/QuestionCard";
+import QuizNavigation from "../components/quiz/QuizNavigation";
 
 export default function Quiz() {
-  const navigate = useNavigate();
-  const [indiceActual, setIndiceActual] = useState(0);
-  const [seleccionada, setSeleccionada] = useState(null);
-  const [calificada, setCalificada] = useState(false);
-  const [respuestas, setRespuestas] = useState([]);
-  const [segundosRestantes, setSegundosRestantes] = useState(TIEMPO_INICIAL_SEGUNDOS);
+const { quizId } = useParams();
+const navigate = useNavigate();
 
-  const pregunta = PREGUNTAS_MOCK[indiceActual];
-  const esUltima = indiceActual === PREGUNTAS_MOCK.length - 1;
+const { user } = useAuth();
 
-  function manejarSeleccion(index) {
-    if (calificada) return;
-    setSeleccionada(index);
-  }
+const {
+quiz,
+loading,
+error,
+load,
+submit,
+} = useQuiz();
 
-  function manejarSiguiente() {
-    if (!calificada) {
-      // Primer click: calificar la pregunta actual (feedback visual inmediato)
-      setCalificada(true);
-      setRespuestas((prev) => [...prev, { indice: indiceActual, seleccionada, correcta: pregunta.correcta }]);
-      return;
-    }
+const [currentQuestion, setCurrentQuestion] = useState(0);
+const [answers, setAnswers] = useState({});
 
-    if (esUltima) {
-      // Aquí se dispararía la llamada a calificarQuiz → evento "QuizCompletado"
-      console.log('Quiz terminado', respuestas);
-      navigate('/resultado');
-      return;
-    }
+useEffect(() => {
+if (quizId) {
+load(quizId);
+}
+}, [quizId]);
 
-    setIndiceActual((prev) => prev + 1);
-    setSeleccionada(null);
-    setCalificada(false);
-  }
+const questions = quiz?.questions || [];
+const current = questions[currentQuestion];
 
-  // NOTA: este interval es solo para visualizar el cronómetro en el mock.
-  // En la versión conectada, el backend valida el tiempo real al recibir las respuestas.
+const handleSelect = (answer) => {
+setAnswers((prev) => ({
+...prev,
+[current.questionId]: answer,
+}));
+};
 
-  return (
-    <div className="flex min-h-screen flex-col items-center gap-7 bg-bg px-5 py-10">
-      <div className="flex w-full max-w-xl items-center gap-4">
-        <BarraProgreso actual={indiceActual + 1} total={PREGUNTAS_MOCK.length} />
-        <Cronometro
-          segundosRestantes={segundosRestantes}
-          onTiempoAgotado={() => console.log('Tiempo agotado — enviar respuestas actuales')}
-        />
-      </div>
+const handleNext = async () => {
+if (currentQuestion < questions.length - 1) {
+setCurrentQuestion((prev) => prev + 1);
+return;
+}
 
-      <PreguntaCard
-        tema={pregunta.tema}
-        dificultad={pregunta.dificultad}
-        texto={pregunta.texto}
-        alternativas={pregunta.alternativas}
-        seleccionada={seleccionada}
-        correcta={pregunta.correcta}
-        calificada={calificada}
-        onSeleccionar={manejarSeleccion}
-      />
 
-      <div className="flex w-full max-w-xl justify-end">
-        <Boton onClick={manejarSiguiente} disabled={seleccionada === null}>
-          {!calificada ? 'Calificar' : esUltima ? 'Ver resultado' : 'Siguiente pregunta'}
-        </Boton>
-      </div>
-    </div>
-  );
+try {
+  const result = await submit({
+    quizId,
+    userId: user?.email,
+    answers,
+  });
+
+  navigate(`/results/${quizId}`, {
+    state: {
+      result,
+      questions,
+    },
+  });
+} catch (err) {
+  console.error(err);
+}
+
+
+};
+
+if (loading && !quiz) {
+return <Loader label="Cargando quiz..." />;
+}
+
+if (error) {
+return (
+<ErrorMessage
+message={error}
+onRetry={() => load(quizId)}
+/>
+);
+}
+
+if (!quiz || questions.length === 0) {
+return ( <div className="py-20 text-center"> <h2 className="text-xl font-semibold text-ink">
+No se encontró el quiz </h2> </div>
+);
+}
+
+const selectedAnswer =
+answers[current.questionId];
+
+return ( <div className="mx-auto max-w-4xl">
+
+```
+  <div className="mb-8">
+
+    <p className="mb-2 text-sm text-ink-muted">
+      Pregunta {currentQuestion + 1} de {questions.length}
+    </p>
+
+    <QuizProgress
+      current={currentQuestion}
+      total={questions.length}
+    />
+
+  </div>
+
+  <QuestionCard
+    question={current}
+    selectedAnswer={selectedAnswer}
+    onSelect={handleSelect}
+    revealed={false}
+  />
+
+  <div className="mt-8">
+
+    <QuizNavigation
+      onNext={handleNext}
+      disabled={!selectedAnswer}
+      isLast={
+        currentQuestion === questions.length - 1
+      }
+    />
+
+  </div>
+
+</div>
+);
 }

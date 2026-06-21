@@ -1,6 +1,6 @@
-import LoginForm from "../components/auth/LoginForm";
+import RegisterForm from "../components/auth/RegisterForm";
 
-export default function Login() {
+export default function Register() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-base px-4">
       <div className="w-full max-w-md">
@@ -14,16 +14,16 @@ export default function Login() {
           </div>
 
           <h1 className="font-display text-xl font-semibold text-ink">
-            Inicia sesión en tu espacio
+            Crea tu espacio de trabajo
           </h1>
           <p className="mb-6 mt-1 text-sm text-ink-muted">
-            Accede a tus planes de estudio, progreso e insights de IA.
+            Configura tu entorno de aprendizaje con IA en segundos.
           </p>
 
-          <LoginForm />
+          <RegisterForm />
         </div>
         <p className="mt-6 text-center text-xs text-ink-faint">
-          Al continuar, aceptas los Términos de Servicio y la Política de Privacidad.
+          Al crear una cuenta, aceptas los Términos de Servicio.
         </p>
       </div>
     </div>
