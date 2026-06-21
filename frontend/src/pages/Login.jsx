@@ -1,17 +1,18 @@
 import LoginForm from "../components/auth/LoginForm";
+import logo from "../assets/logo.png";
 
 export default function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-base px-4">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-base-border bg-base-surface p-8 shadow-glow">
-          <div className="mb-6 flex items-center gap-3">
-            <img src="/logo.svg" alt="" className="h-9 w-9" />
-            <div>
-              <p className="font-display text-base font-semibold text-ink">ExamForge AI</p>
-              <p className="text-xs text-ink-faint">Sistema de estudio inteligente</p>
+          <div className="flex flex-col items-center mb-6">
+            <img
+                src={logo}
+                alt="ExamForge AI"
+                className="h-20 w-auto"
+            />
             </div>
-          </div>
 
           <h1 className="font-display text-xl font-semibold text-ink">
             Inicia sesión en tu espacio

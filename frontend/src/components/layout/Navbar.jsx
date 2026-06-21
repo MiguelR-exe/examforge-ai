@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
+import logo from "../../assets/logo.png";
 
 function initials(name = "") {
   return name
@@ -27,11 +28,17 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-base-border bg-base/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <div className="flex items-center gap-3">
-          <img src="/logo.svg" alt="" className="h-7 w-7" />
-          <span className="font-display text-base font-semibold text-ink">ExamForge</span>
-          <span className="rounded-md border border-brand/30 bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand-glow">
+        <img
+            src={logo}
+            alt="ExamForge AI"
+            className="h-10 w-10 rounded-lg"
+        />
+        <span className="font-display text-base font-semibold text-ink">
+            ExamForge
+        </span>
+        <span className="rounded-md border border-brand/30 bg-brand/10 px-2 py-0.5 text-xs font-medium text-brand-glow">
             AI
-          </span>
+        </span>
         </div>
 
         <nav className="hidden items-center gap-1 rounded-xl bg-base-raised p-1 md:flex">
