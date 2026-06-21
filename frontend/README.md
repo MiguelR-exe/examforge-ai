@@ -1,16 +1,82 @@
-# React + Vite
+# ExamForge AI — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA construida con **React + Vite + TailwindCSS** para subir documentos, lanzar el flujo de generación de quizzes y visualizar resultados.
 
-Currently, two official plugins are available:
+## Estructura
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```
+frontend/
+├── public/
+├── src/
+│   ├── assets/            # imágenes e iconos
+│   ├── components/
+│   │   ├── layout/        # Navbar, Sidebar, ProtectedRoute
+│   │   ├── auth/           # LoginForm, RegisterForm
+│   │   ├── dashboard/      # StatCard, DashboardStats, RecentDocuments, QuizHistory
+│   │   ├── upload/         # UploadZone, UploadButton, UploadProgress
+│   │   ├── quiz/           # QuestionCard, OptionButton, QuizNavigation
+│   │   ├── result/         # ScoreCard, QuestionReview, ResultSummary
+│   │   └── common/         # Button, Card, Modal, Loader, EmptyState
+│   ├── pages/              # Login, Register, Dashboard, Upload, Quiz, Results, Profile
+│   ├── services/           # api.js, authService.js, documentService.js, quizService.js
+│   ├── context/            # AuthContext
+│   ├── hooks/               # useAuth, useDashboard, useQuiz, useUpload
+│   ├── routes/              # AppRoutes
+│   ├── utils/                # constants, formatDate, storage, validators
+│   └── styles/               # globals.css, theme.css
+├── .env.example
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+└── postcss.config.js
+```
 
-## React Compiler
+## Requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 18+
+- npm 9+
 
-## Expanding the ESLint configuration
+## Variables de entorno
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Crear un archivo `.env` en `frontend/` con:
+
+```
+VITE_API_BASE_URL=https://g9hq7aukf3.execute-api.us-east-1.amazonaws.com/dev
+```
+
+## Instalación local
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+La app quedará disponible en `http://localhost:5173`.
+
+## Build de producción
+
+```bash
+npm run build
+```
+
+Esto genera la carpeta `dist/` lista para desplegar.
+
+## Despliegue
+
+_[Completar según dónde se desplegó: S3 + CloudFront / Amplify / Vercel, con los pasos exactos usados]_
+
+Ejemplo genérico para S3 + CloudFront:
+
+```bash
+aws s3 sync dist/ s3://examforge-uploads-hack --delete
+aws cloudfront create-invalidation --distribution-id <ID> --paths "/*"
+```
+
+## Flujo principal de la UI
+
+1. **Login / Register** → autenticación contra `auth-handler`.
+2. **Upload** → el usuario sube un documento, se invoca `upload-handler`, que dispara el flujo de eventos en el backend.
+3. **Dashboard** → muestra el estado del procesamiento (polling a `dashboard-handler`) y el historial de documentos/quizzes.
+4. **Quiz** → una vez generado el cuestionario, el usuario responde pregunta por pregunta.
+5. **Results** → muestra el puntaje final y el repaso de cada pregunta (correcta/incorrecta + explicación).
