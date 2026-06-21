@@ -12,8 +12,8 @@
 
 | Recurso | Link |
 |---|---|
-| 🌐 Frontend desplegado | _[URL pública aquí]_ |
-| 🎥 Video demo (Drive) | Ver [`demo/video-link.md`](./demo/video-link.md) |
+| 🌐 Frontend desplegado | _[https://main.d2duzc8xkq38hs.amplifyapp.com/login]_ |
+| 🎥 Video demo (Youtube) | Ver [`demo/video-link.md`](./demo/README.md) |
 | 📐 Diagrama de arquitectura | Ver [`docs/architecture/`](./docs/architecture/README.md) |
 | 📖 Manual de despliegue | Ver [`docs/deployment/`](./docs/deployment/README.md) |
 | 🧩 Contexto del problema | Ver [`docs/context/`](./docs/context/README.md) |
@@ -129,7 +129,7 @@ examforge-ai/
 │   ├── architecture/           ← explicación detallada del diagrama
 │   └── deployment/             ← manual paso a paso de despliegue
 └── demo/
-    └── video-link.md           ← link al video demo en YouTube
+    └── README.md           ← link al video demo en YouTube
 ```
 
 ---

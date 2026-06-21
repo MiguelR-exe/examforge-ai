@@ -38,9 +38,6 @@ def lambda_handler(event, context):
             'Bucket': BUCKET_NAME,
             'Key': object_key,
             'ContentType': content_type,
-            # La metadata viaja con el objeto en S3. IMPORTANTE: el frontend
-            # debe mandar el header x-amz-meta-userid en el PUT a esta URL,
-            # o la firma de la URL prefirmada no va a coincidir.
             'Metadata': {
                 'userid': user_id
             }

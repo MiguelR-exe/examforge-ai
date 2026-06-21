@@ -82,11 +82,11 @@ El archivo incluye una función `verify_jwt(token)` que valida la firma y la exp
 ## Probar manualmente
 
 ```bash
-curl -X POST "https://TU_API_ID.execute-api.us-east-1.amazonaws.com/dev/auth/register" \
+curl -X POST "https://g9hq7aukf3.execute-api.us-east-1.amazonaws.com/dev/auth/register" \
   -H "Content-Type: application/json" \
   -d '{"email": "test@test.com", "password": "123456", "name": "Estudiante Test"}'
 
-curl -X POST "https://TU_API_ID.execute-api.us-east-1.amazonaws.com/dev/auth/login" \
+curl -X POST "https://g9hq7aukf3.execute-api.us-east-1.amazonaws.com/dev/auth/login" \
   -H "Content-Type: application/json" \
   -d '{"email": "test@test.com", "password": "123456"}'
 ```

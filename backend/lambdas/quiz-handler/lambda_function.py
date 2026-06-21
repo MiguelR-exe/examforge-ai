@@ -143,9 +143,6 @@ def submit_quiz(quiz_id, body):
 
     total = len(quiz['questions'])
 
-    # IMPORTANTE: DynamoDB no acepta floats nativos de Python (lanza
-    # "Float types are not supported"). Por eso se convierte a Decimal
-    # antes de guardar, y de vuelta a float solo para la respuesta JSON.
     score = Decimal(str(round((correct_count / total) * 100, 1))) if total > 0 else Decimal(0)
 
     results_table.put_item(Item={

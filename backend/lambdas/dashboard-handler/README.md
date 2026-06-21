@@ -75,5 +75,5 @@ user_documents = [d for d in all_documents if d.get('userId') == user_id]
 ## Probar manualmente
 
 ```bash
-curl -X GET "https://TU_API_ID.execute-api.us-east-1.amazonaws.com/dev/dashboard/test@test.com"
+curl -X GET "https://g9hq7aukf3.execute-api.us-east-1.amazonaws.com/dev/dashboard/test@test.com"
 ```

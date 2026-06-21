@@ -1,6 +1,6 @@
 # Despliegue Local
 
-El despliegue local está explicado en el README dentro de frontend.
+El despliegue local está explicado en el README dentro de frontend. (./frontend/README.md)
 
 # Manual de despliegue desde 0
 

@@ -70,7 +70,7 @@ Ese `PUT` exitoso dispara automáticamente todo el pipeline de eventos: S3 → E
 ## Probar manualmente
 
 ```bash
-curl -X POST "https://TU_API_ID.execute-api.us-east-1.amazonaws.com/dev/documents/upload-url" \
+curl -X POST "https://g9hq7aukf3.execute-api.us-east-1.amazonaws.com/dev/documents/upload-url" \
   -H "Content-Type: application/json" \
   -d '{"fileName": "test.pdf", "contentType": "application/pdf", "userId": "test@test.com"}'
 ```

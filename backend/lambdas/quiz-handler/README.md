@@ -127,7 +127,7 @@ return response(200, {"score": float(score), ...})
 ## Probar manualmente
 
 ```bash
-curl -X POST "https://TU_API_ID.execute-api.us-east-1.amazonaws.com/dev/quizzes/generate" \
+curl -X POST "https://g9hq7aukf3.execute-api.us-east-1.amazonaws.com/dev/quizzes/generate" \
   -H "Content-Type: application/json" \
   -d '{"documentId": "TU_DOCUMENT_ID", "numQuestions": 3, "difficulty": "intermedio"}'
 ```
