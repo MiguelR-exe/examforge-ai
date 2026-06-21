@@ -13,7 +13,7 @@ export default function Upload() {
 const navigate = useNavigate();
 const { user } = useAuth();
 
-const [file, setFile] = useState(null);
+const [files, setFiles] = useState([]);
 
 const {
 upload,
@@ -23,14 +23,15 @@ STAGES,
 } = useUpload(user?.email);
 
 const handleUpload = async () => {
-if (!file) return;
+  if (files.length === 0) return;
 
-try {
-  await upload(file);
-} catch (err) {
-  console.error(err);
-}
-
+  try {
+    for (const file of files) {
+      await upload(file);
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 return ( <div className="mx-auto max-w-5xl">
@@ -55,32 +56,33 @@ return ( <div className="mx-auto max-w-5xl">
       <Card className="p-6">
 
         <UploadZone
-          onFileSelected={setFile}
+          onFileSelected={setFiles}
           disabled={stage !== STAGES.IDLE}
         />
 
-        {file && (
-          <div className="mt-5 rounded-xl border border-base-border bg-base px-4 py-3">
+        {files.length > 0 && (
+        <div className="mt-5 space-y-3">
+            {files.map((file) => (
+            <div
+                key={`${file.name}-${file.size}`}
+                className="rounded-xl border border-base-border bg-base px-4 py-3"
+            >
+                <div className="flex items-center gap-3">
+                <span className="text-2xl">📄</span>
 
-            <div className="flex items-center gap-3">
+                <div>
+                    <p className="font-medium text-ink">
+                    {file.name}
+                    </p>
 
-              <span className="text-2xl">
-                📄
-              </span>
-
-              <div>
-                <p className="font-medium text-ink">
-                  {file.name}
-                </p>
-
-                <p className="text-xs text-ink-faint">
-                  {(file.size / 1024 / 1024).toFixed(2)} MB
-                </p>
-              </div>
-
+                    <p className="text-xs text-ink-faint">
+                    {(file.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                </div>
+                </div>
             </div>
-
-          </div>
+            ))}
+        </div>
         )}
 
         {stage !== STAGES.IDLE &&
@@ -131,7 +133,7 @@ return ( <div className="mx-auto max-w-5xl">
           <div className="mt-8">
             <Button
               onClick={handleUpload}
-              disabled={!file}
+              disabled={files.length === 0}
               className="w-full justify-center"
             >
               Procesar Documento

@@ -17,10 +17,11 @@ export default function UploadZone({ onFileSelected, disabled }) {
   };
 
   const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    if (disabled) return;
-    handleFile(e.dataTransfer.files?.[0]);
+  e.preventDefault();
+
+  const files = Array.from(e.dataTransfer.files);
+
+  onFileSelected(files);
   };
 
   return (
@@ -55,9 +56,10 @@ export default function UploadZone({ onFileSelected, disabled }) {
           ref={inputRef}
           type="file"
           accept="application/pdf"
+          multiple
           className="hidden"
           disabled={disabled}
-          onChange={(e) => handleFile(e.target.files?.[0])}
+          onChange={(e) => onFileSelected(Array.from(e.target.files))}
         />
       </div>
       {fileError && <p className="mt-2 text-sm text-bad">{fileError}</p>}
