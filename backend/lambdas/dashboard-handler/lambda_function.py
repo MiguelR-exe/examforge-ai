@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+from decimal import Decimal
 from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
@@ -34,12 +35,10 @@ def lambda_handler(event, context):
 
 
 def get_dashboard(user_id):
-    # 1. Obtener todos los resultados de quizzes de este usuario
     results = results_table.query(
         KeyConditionExpression=Key('userId').eq(user_id)
     ).get('Items', [])
 
-    # 2. Calcular estadísticas agregadas de quizzes
     total_quizzes = len(results)
     if total_quizzes > 0:
         avg_score = sum(float(r.get('score', 0)) for r in results) / total_quizzes
@@ -47,12 +46,6 @@ def get_dashboard(user_id):
     else:
         avg_score = 0
 
-    # 3. Documentos procesados por este usuario.
-    # NOTA: la tabla Documents usa documentId como partition key, no userId,
-    # así que no hay forma de hacer un query() eficiente filtrado por usuario
-    # sin un GSI. Para el volumen de una demo de hackathon, un scan() + filtro
-    # en Python es simple y suficientemente rápido (no es production-ready,
-    # pero es una decisión consciente de alcance, no un descuido).
     all_documents = documents_table.scan().get('Items', [])
     user_documents = [d for d in all_documents if d.get('userId') == user_id]
 
@@ -66,7 +59,6 @@ def get_dashboard(user_id):
         for d in user_documents
     ]
 
-    # 4. Historial de quizzes, ordenado del más reciente al más antiguo
     history = sorted(
         [
             {

@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
 function initials(name = "") {
@@ -67,7 +68,7 @@ export default function Navbar() {
             title="Cerrar sesión"
             aria-label="Cerrar sesión"
           >
-            ⏻
+            <LogOut className="h-4 w-4" strokeWidth={1.5} />
           </button>
         </div>
       </div>

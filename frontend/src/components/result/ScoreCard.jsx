@@ -1,6 +1,7 @@
 import Card from "../common/Card";
 import Button from "../common/Button";
 import { Link } from "react-router-dom";
+import { BarChart3 } from "lucide-react";
 
 function messageForScore(score) {
   if (score >= 80) return "¡Excelente trabajo!";
@@ -11,8 +12,8 @@ function messageForScore(score) {
 export default function ScoreCard({ score, correctCount, totalQuestions }) {
   return (
     <Card className="mx-auto max-w-md p-8 text-center">
-      <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 text-2xl text-brand-glow">
-        📊
+      <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 text-brand-glow">
+        <BarChart3 className="h-6 w-6" strokeWidth={1.5} />
       </span>
       <h1 className="font-display text-xl font-semibold text-ink">{messageForScore(score)}</h1>
       <p className="mt-1 text-sm text-ink-muted">
@@ -37,7 +38,7 @@ export default function ScoreCard({ score, correctCount, totalQuestions }) {
       </div>
 
       <Link to="/dashboard">
-        <Button className="w-full justify-center">Ver mi plan de estudio →</Button>
+        <Button className="w-full justify-center">Ir al Dashboard→</Button>
       </Link>
     </Card>
   );

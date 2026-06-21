@@ -1,10 +1,11 @@
+import { Check } from "lucide-react";
 import Button from "../common/Button";
 
 export default function UploadSuccess({ fileName, onGenerateQuiz, onGoToDashboard }) {
   return (
     <div className="flex flex-col items-center gap-4 py-6 text-center">
-      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-good/10 text-2xl text-good">
-        ✓
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-good/10 text-good">
+        <Check className="h-6 w-6" strokeWidth={2} />
       </span>
       <div>
         <p className="font-display text-base font-semibold text-ink">¡Documento procesado!</p>

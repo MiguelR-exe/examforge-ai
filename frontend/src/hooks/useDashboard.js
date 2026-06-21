@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { dashboardService } from "../services/dashboardService";
 
 export function useDashboard(userId) {
@@ -6,15 +6,12 @@ export function useDashboard(userId) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const load = async () => {
+  const load = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
 
       const response = await dashboardService.getDashboard(userId);
-
-      console.log("DASHBOARD RESPONSE", response);
-
       setData(response);
     } catch (err) {
       console.error(err);
@@ -22,13 +19,13 @@ export function useDashboard(userId) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     if (userId) {
       load();
     }
-  }, [userId]);
+  }, [userId, load]);
 
   return {
     data,

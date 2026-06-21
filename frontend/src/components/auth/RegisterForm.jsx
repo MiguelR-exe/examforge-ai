@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { validateRegisterForm } from "../../utils/validators";
 import Button from "../common/Button";
@@ -71,9 +72,9 @@ export default function RegisterForm() {
             type="button"
             onClick={() => setShowPassword((s) => !s)}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-faint hover:text-ink"
-            aria-label="Mostrar contraseña"
+            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
           >
-            👁
+            {showPassword ? <EyeOff className="h-4 w-4" strokeWidth={1.5} /> : <Eye className="h-4 w-4" strokeWidth={1.5} />}
           </button>
         </div>
         {fieldErrors.password && <p className="mt-1 text-xs text-bad">{fieldErrors.password}</p>}

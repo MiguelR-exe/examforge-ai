@@ -1,3 +1,5 @@
+import { Check, X } from "lucide-react";
+
 const LETTER_STYLE_DEFAULT = "bg-base-raised text-ink-muted";
 const LETTER_STYLE_SELECTED = "bg-brand text-white";
 const LETTER_STYLE_CORRECT = "bg-good text-white";
@@ -12,11 +14,11 @@ export default function OptionButton({ letter, text, selected, revealed, isCorre
     if (isCorrect) {
       containerStyle = "border-good/40 bg-good/5";
       letterStyle = LETTER_STYLE_CORRECT;
-      icon = "✓";
+      icon = <Check className="h-4 w-4" strokeWidth={2} />;
     } else if (selected) {
       containerStyle = "border-bad/40 bg-bad/5";
       letterStyle = LETTER_STYLE_WRONG;
-      icon = "✕";
+      icon = <X className="h-4 w-4" strokeWidth={2} />;
     }
   } else if (selected) {
     containerStyle = "border-brand bg-brand/5";

@@ -1,3 +1,5 @@
+import { Check } from "lucide-react";
+
 const STEPS = [
   { key: "requesting-url", label: "Solicitando acceso seguro" },
   { key: "uploading", label: "Subiendo archivo" },
@@ -18,7 +20,7 @@ export default function UploadProgress({ stage }) {
               className={`flex h-6 w-6 items-center justify-center rounded-full text-xs
                 ${isDone ? "bg-good text-white" : isActive ? "bg-brand text-white" : "bg-base-raised text-ink-faint"}`}
             >
-              {isDone ? "✓" : i + 1}
+              {isDone ? <Check className="h-3.5 w-3.5" strokeWidth={2} /> : i + 1}
             </span>
             <span className={`text-sm ${isActive ? "text-ink" : "text-ink-muted"}`}>
               {step.label}

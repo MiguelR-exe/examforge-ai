@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { FileText } from "lucide-react";
 
 import Card from "../common/Card";
 import EmptyState from "../common/EmptyState";
@@ -17,8 +18,6 @@ export default function RecentDocuments({ documents = [] }) {
         difficulty: "intermedio",
       });
 
-      console.log("QUIZ GENERADO:", response);
-
       navigate(`/quiz/${response.quizId}`);
     } catch (error) {
       console.error(error);
@@ -29,17 +28,13 @@ export default function RecentDocuments({ documents = [] }) {
   return (
     <Card className="p-5">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-display text-sm font-semibold text-ink">
-          Documentos recientes
-        </h2>
-
-        <span className="text-xs text-ink-faint">
-          {documents.length}
-        </span>
+        <h2 className="font-display text-sm font-semibold text-ink">Documentos recientes</h2>
+        <span className="text-xs text-ink-faint">{documents.length}</span>
       </div>
 
       {documents.length === 0 ? (
         <EmptyState
+          icon={<FileText className="h-6 w-6" strokeWidth={1.5} />}
           title="Aún no subes documentos"
           description="Sube tu primer PDF para generar un plan de estudio."
         />
@@ -52,21 +47,13 @@ export default function RecentDocuments({ documents = [] }) {
             >
               <div className="flex items-center gap-3">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand/10 text-brand-glow">
-                  📄
+                  <FileText className="h-4 w-4" strokeWidth={1.75} />
                 </span>
 
                 <div>
-                  <p className="text-sm font-medium text-ink">
-                    {doc.bucketKey}
-                  </p>
-
-                  <p className="text-xs text-ink-faint">
-                    {formatRelativeDate(doc.createdAt)}
-                  </p>
-
-                  <p className="mt-1 text-xs text-ink-faint">
-                    Estado: {doc.status}
-                  </p>
+                  <p className="text-sm font-medium text-ink">{doc.bucketKey}</p>
+                  <p className="text-xs text-ink-faint">{formatRelativeDate(doc.createdAt)}</p>
+                  <p className="mt-1 text-xs text-ink-faint">Estado: {doc.status}</p>
                 </div>
               </div>
 
